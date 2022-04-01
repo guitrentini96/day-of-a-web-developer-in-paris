@@ -101,6 +101,36 @@ const App = () => {
     );
   };
 
+  const formatDate = (date) => {
+    const fullDate = new Date(date);
+    const days_of_the_week = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ];
+    const months = [
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
+    ];
+    return `${days_of_the_week[fullDate.getDay()]}. ${
+      months[fullDate.getMonth()]
+    } ${fullDate.getDate()}.`;
+  };
+
   const renderItems = () => {
     const filteredReminders = state.reminderList.filter(
       (item) => item.completed === state.viewCompleted
@@ -112,9 +142,9 @@ const App = () => {
           {i === filteredReminders.length - 1 ||
           filteredReminders[i + 1].created_at !== item.created_at ? (
             item.created_at === state.today ? (
-              <h1>Today</h1>
+              <h1>today</h1>
             ) : (
-              <h1>{item.created_at}</h1>
+              <h1>{formatDate(item.created_at)}</h1>
             )
           ) : (
             ''
@@ -138,7 +168,7 @@ const App = () => {
                 {item.title}
               </h1>
               <span className="description">{item.description}</span>
-              <span className="description">{item.created_at}</span>
+              {/* <span className="description">{formatDate(item.created_at)}</span> */}
             </div>
           </div>
         </li>
