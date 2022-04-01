@@ -14,6 +14,7 @@ const App = () => {
     },
     reminderList: [],
     today: '',
+    onlyPriority: false,
   });
 
   React.useEffect(() => {
@@ -52,7 +53,8 @@ const App = () => {
   const handleClick = (e) => {
     const newReminderList = state.reminderList.map((item) => {
       if (item.id === parseInt(e.target.name)) {
-        item.completed = !item.completed;
+        const value = e.target.value;
+        item[value] = !item[value];
         console.log(item);
 
         // update on the backend
@@ -82,6 +84,11 @@ const App = () => {
     return setState({ ...state, viewCompleted: false });
   };
 
+  const togglePriority = () => {
+    setState({ ...state, onlyPriority: !state.onlyPriority });
+    console.log(state.onlyPriority);
+  };
+
   const renderTabList = () => {
     return (
       <div className="switch-buttons">
@@ -96,6 +103,12 @@ const App = () => {
           className={state.viewCompleted ? '' : 'active'}
         >
           Incomplete
+        </button>
+        <button
+          className={state.onlyPriority ? 'active' : ''}
+          onClick={() => togglePriority()}
+        >
+          Only show priority
         </button>
       </div>
     );
@@ -132,47 +145,60 @@ const App = () => {
   };
 
   const renderItems = () => {
-    const filteredReminders = state.reminderList.filter(
+    let filteredReminders = state.reminderList.filter(
       (item) => item.completed === state.viewCompleted
     );
+    if (state.onlyPriority) {
+      filteredReminders = filteredReminders.filter((item) => item.priority);
+    }
     return filteredReminders.map((item, i) => (
-      <>
-        <li key={item.id} className="general-list-item">
-          {/* returns the creation date if it's the last item or if the next creation date is different */}
-          {i === filteredReminders.length - 1 ||
-          filteredReminders[i + 1].created_at !== item.created_at ? (
-            item.created_at === state.today ? (
-              <h1>today</h1>
-            ) : (
-              <h1>{formatDate(item.created_at)}</h1>
-            )
+      <li key={item.id} className="general-list-item">
+        {/* returns the creation date if it's the last item or if the next creation date is different */}
+        {i === filteredReminders.length - 1 ||
+        filteredReminders[i + 1].created_at !== item.created_at ? (
+          item.created_at === state.today ? (
+            <h1>today</h1>
           ) : (
-            ''
-          )}
+            <h1>{formatDate(item.created_at)}</h1>
+          )
+        ) : (
+          ''
+        )}
 
-          <div className="list-item">
-            <input
-              type="checkbox"
-              checked={item.completed}
-              className="status-checkbox"
-              onChange={handleClick}
-              name={item.id}
-            ></input>
-            <div className="title-description">
-              <h1
-                className={`title ${
-                  state.viewCompleted ? 'completed-reminder' : ''
-                }`}
-                title={item.description}
-              >
-                {item.title}
-              </h1>
-              <span className="description">{item.description}</span>
-              {/* <span className="description">{formatDate(item.created_at)}</span> */}
-            </div>
+        <div className="list-item">
+          {/* checkbox that evaluates if a task is completed or not */}
+          <input
+            type="checkbox"
+            checked={item.completed}
+            className="status-checkbox"
+            onChange={handleClick}
+            name={item.id}
+            value="completed"
+          ></input>
+          {/* checkbox that evaluates if a task is priority or not */}
+          <input
+            type="checkbox"
+            checked={item.priority}
+            className="priority-checkbox"
+            onChange={handleClick}
+            name={item.id}
+            value="priority"
+          ></input>
+          {/* div that contains the title and the description */}
+          <div className="title-description">
+            <h1
+              className={`title ${
+                state.viewCompleted ? 'completed-reminder' : ''
+              }`}
+              title={item.description}
+            >
+              {item.title}
+            </h1>
+            <span className="description">{item.description}</span>
+            <span className="description">{formatDate(item.created_at)}</span>
           </div>
-        </li>
-      </>
+        </div>
+      </li>
     ));
   };
 

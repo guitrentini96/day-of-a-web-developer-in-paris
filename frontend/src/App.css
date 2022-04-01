@@ -16,7 +16,7 @@
   margin-top: 20px;
   margin-bottom: 30px;
   display: flex;
-  width: 200px;
+  width: 23rem;
   justify-content: space-between;
 }
 
@@ -58,6 +58,17 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+input[type="checkbox"] {
+  cursor:pointer;
+  width: 1.15em;
+  height: 1.15em;
+  margin-right:10px;
+}
+
 .status-checkbox{
-  margin-right:10px
+  
+}
+
+.priority-checkbox{
+  
 }
