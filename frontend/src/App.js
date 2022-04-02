@@ -66,13 +66,13 @@ const App = () => {
   };
 
   const createItem = () => {
-    const dateToday = new Date();
     const item = {
       title: '',
       description: '',
       completed: false,
       id: state.reminderList[state.reminderList.length - 1].id + 1,
-      created_at: dateToday.toDateString(),
+      created_at: state.today,
+      priority: false,
     };
     setState({ ...state, activeItem: item, modal: !state.modal });
   };

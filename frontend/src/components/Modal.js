@@ -64,6 +64,17 @@ export default class CustomModal extends Component {
                 Completed
               </Label>
             </FormGroup>
+            <FormGroup check>
+              <Label for="priority">
+                <Input
+                  type="checkbox"
+                  name="priority"
+                  checked={this.state.activeItem.priority}
+                  onChange={this.handleChange}
+                />
+                Priority
+              </Label>
+            </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
