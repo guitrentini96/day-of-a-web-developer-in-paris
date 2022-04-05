@@ -1,7 +1,5 @@
-*{
-  margin:0;
-  padding:0;
-  box-sizing: border-box;
+body{
+  background-color: beige;
 }
 
 .page-box{
@@ -32,30 +30,19 @@
   /* background-color: beige; */
 }
 
-.list-item{
-  display: flex;
-  align-items: center;
-  padding:20px;
-  background-color: aqua;
-}
-
 .title-description{
   display:flex;
   flex-direction: column;
 }
 
 .title{
-  color:blue;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color:white;
 }
 
-.completed-reminder{
-  color:green;
-}
+
 
 .description{
   color:white;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 input[type="checkbox"] {
@@ -63,12 +50,4 @@ input[type="checkbox"] {
   width: 1.15em;
   height: 1.15em;
   margin-right:10px;
-}
-
-.status-checkbox{
-  
-}
-
-.priority-checkbox{
-  
 }

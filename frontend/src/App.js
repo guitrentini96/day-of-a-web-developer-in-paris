@@ -2,6 +2,20 @@ import './App.css';
 import React from 'react';
 import Modal from './components/Modal';
 import axios from 'axios';
+import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
 
 const App = () => {
   const [state, setState] = React.useState({
@@ -15,6 +29,8 @@ const App = () => {
     reminderList: [],
     today: '',
     onlyPriority: false,
+    alignment: 'incomplete',
+    modal: false,
   });
 
   React.useEffect(() => {
@@ -34,9 +50,9 @@ const App = () => {
         ...state,
         reminderList: reminderList,
         today: today.toDateString(),
+        modal: false,
       });
     };
-
     fetchReminders().catch(console.error);
   }, []);
 
@@ -47,6 +63,7 @@ const App = () => {
   const handleSubmit = (item) => {
     axios.post('http://localhost:8000/api/reminders/', item);
     const newReminderList = state.reminderList.concat(item);
+
     setState({ ...state, reminderList: newReminderList, modal: false });
   };
 
@@ -70,46 +87,54 @@ const App = () => {
       title: '',
       description: '',
       completed: false,
-      id: state.reminderList[state.reminderList.length - 1].id + 1,
+      id: state.reminderList.length
+        ? state.reminderList[state.reminderList.length - 1].id + 1
+        : 1,
       created_at: state.today,
       priority: false,
     };
     setState({ ...state, activeItem: item, modal: !state.modal });
   };
 
-  const displayCompleted = (status) => {
-    if (status) {
-      return setState({ ...state, viewCompleted: true });
-    }
-    return setState({ ...state, viewCompleted: false });
-  };
-
   const togglePriority = () => {
     setState({ ...state, onlyPriority: !state.onlyPriority });
-    console.log(state.onlyPriority);
+  };
+
+  const handleAlignment = (event, newAlignment) => {
+    if (newAlignment !== null) {
+      setState({
+        ...state,
+        alignment: newAlignment,
+        viewCompleted: event.target.value === 'complete' ? true : false,
+      });
+      console.log(newAlignment);
+    }
   };
 
   const renderTabList = () => {
     return (
       <div className="switch-buttons">
-        <button
-          onClick={() => displayCompleted(true)}
-          className={state.viewCompleted ? 'active' : ''}
+        <ToggleButtonGroup
+          exclusive
+          value={state.alignment}
+          onChange={handleAlignment}
         >
-          Complete
-        </button>
-        <button
-          onClick={() => displayCompleted(false)}
-          className={state.viewCompleted ? '' : 'active'}
-        >
-          Incomplete
-        </button>
-        <button
-          className={state.onlyPriority ? 'active' : ''}
-          onClick={() => togglePriority()}
-        >
-          Only show priority
-        </button>
+          <ToggleButton value="complete">Complete</ToggleButton>
+          <ToggleButton value="incomplete">Incomplete</ToggleButton>
+        </ToggleButtonGroup>
+        <FormGroup>
+          <FormControlLabel
+            labelPlacement="top"
+            control={
+              <Switch
+                color="error"
+                onChange={togglePriority}
+                checked={state.onlyPriority}
+              />
+            }
+            label={<Favorite color="error" />}
+          />
+        </FormGroup>
       </div>
     );
   };
@@ -152,7 +177,7 @@ const App = () => {
       filteredReminders = filteredReminders.filter((item) => item.priority);
     }
     return filteredReminders.map((item, i) => (
-      <li key={item.id} className="general-list-item">
+      <Stack>
         {/* returns the creation date if it's the last item or if the next creation date is different */}
         {i === filteredReminders.length - 1 ||
         filteredReminders[i + 1].created_at !== item.created_at ? (
@@ -165,63 +190,81 @@ const App = () => {
           ''
         )}
 
-        <div className="list-item">
-          {/* checkbox that evaluates if a task is completed or not */}
-          <input
-            type="checkbox"
-            checked={item.completed}
-            className="status-checkbox"
-            onChange={handleClick}
-            name={item.id}
-            value="completed"
-          ></input>
-          {/* checkbox that evaluates if a task is priority or not */}
-          <input
-            type="checkbox"
-            checked={item.priority}
-            className="priority-checkbox"
-            onChange={handleClick}
-            name={item.id}
-            value="priority"
-          ></input>
-          {/* div that contains the title and the description */}
-          <div className="title-description">
-            <h1
-              className={`title ${
-                state.viewCompleted ? 'completed-reminder' : ''
-              }`}
-              title={item.description}
-            >
-              {item.title}
-            </h1>
-            <span className="description">{item.description}</span>
-            <span className="description">{formatDate(item.created_at)}</span>
-          </div>
-        </div>
-      </li>
+        <Paper elevation={5}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            p={2}
+            bgcolor="#D9B382"
+            width="600px"
+          >
+            {/* checkbox that evaluates if a task is completed or not */}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={item.completed}
+                  onChange={handleClick}
+                  inputProps={{ value: 'completed', name: item.id }}
+                />
+              }
+            />
+
+            {/* Stack that contains the title and the description */}
+            <Stack>
+              <Typography variant="h4" component="h2" color="white">
+                {item.title}
+              </Typography>
+              <Typography variant="body1" component="p" color="white">
+                {item.description}
+              </Typography>
+              <Typography variant="caption" component="p" color="white">
+                {formatDate(item.created_at)}
+              </Typography>
+            </Stack>
+
+            <FormControlLabel
+              sx={{ alignSelf: 'start', marginLeft: 'auto', marginRight: '0' }}
+              control={
+                <Checkbox
+                  checked={item.priority}
+                  onChange={handleClick}
+                  icon={<FavoriteBorder />}
+                  checkedIcon={<Favorite sx={{ color: 'yellow' }} />}
+                  inputProps={{ value: 'priority', name: item.id }}
+                />
+              }
+            />
+          </Stack>
+        </Paper>
+      </Stack>
+      // </li>
     ));
   };
 
   return (
-    <div className="page-box">
-      <div className="">
-        <button onClick={createItem} className="btn btn-success">
+    <Container>
+      <div className="page-box">
+        <Button variant="contained" color="error" onClick={createItem}>
           Add Task
-        </button>
+        </Button>
+
+        {renderTabList()}
+
+        {/* <ul className="list">{renderItems()}</ul> */}
+
+        <Stack spacing={3} direction="column-reverse">
+          {renderItems()}
+        </Stack>
+
+        {state.modal ? (
+          <Modal
+            activeItem={state.activeItem}
+            toggle={toggle}
+            onSave={handleSubmit}
+          />
+        ) : null}
       </div>
-
-      {renderTabList()}
-
-      <ul className="list">{renderItems()}</ul>
-
-      {state.modal ? (
-        <Modal
-          activeItem={state.activeItem}
-          toggle={toggle}
-          onSave={handleSubmit}
-        />
-      ) : null}
-    </div>
+    </Container>
   );
 };
 
