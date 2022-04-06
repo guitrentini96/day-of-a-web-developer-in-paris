@@ -30,7 +30,7 @@ export default class CustomModal extends Component {
     const { toggle, onSave } = this.props;
     return (
       <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Todo Item</ModalHeader>
+        <ModalHeader toggle={toggle}>New Reminder</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
@@ -40,7 +40,7 @@ export default class CustomModal extends Component {
                 name="title"
                 value={this.state.activeItem.title}
                 onChange={this.handleChange}
-                placeholder="Enter Todo Title"
+                placeholder="Enter Title"
               />
             </FormGroup>
             <FormGroup>
@@ -50,7 +50,7 @@ export default class CustomModal extends Component {
                 name="description"
                 value={this.state.activeItem.description}
                 onChange={this.handleChange}
-                placeholder="Enter Todo description"
+                placeholder="Enter description"
               />
             </FormGroup>
             <FormGroup check>
@@ -78,7 +78,7 @@ export default class CustomModal extends Component {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="success" onClick={() => onSave(this.state.activeItem)}>
+          <Button color="danger" onClick={() => onSave(this.state.activeItem)}>
             Save
           </Button>
         </ModalFooter>

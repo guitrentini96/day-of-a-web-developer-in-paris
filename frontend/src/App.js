@@ -257,7 +257,7 @@ const App = () => {
     <Container>
       <Stack mt={2} alignItems="center">
         <Button variant="contained" color="error" onClick={createItem}>
-          Add Task
+          Add Reminder
         </Button>
 
         {renderTabList()}
