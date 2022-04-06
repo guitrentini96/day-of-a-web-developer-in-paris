@@ -13,9 +13,9 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 
 const App = () => {
   const [state, setState] = React.useState({
@@ -113,7 +113,13 @@ const App = () => {
 
   const renderTabList = () => {
     return (
-      <div className="switch-buttons">
+      <Stack
+        direction="row"
+        mt={2}
+        mb={3}
+        justifyContent="space-between"
+        minWidth="40rem"
+      >
         <ToggleButtonGroup
           exclusive
           value={state.alignment}
@@ -135,7 +141,7 @@ const App = () => {
             label={<Favorite color="error" />}
           />
         </FormGroup>
-      </div>
+      </Stack>
     );
   };
 
@@ -177,12 +183,14 @@ const App = () => {
       filteredReminders = filteredReminders.filter((item) => item.priority);
     }
     return filteredReminders.map((item, i) => (
-      <Stack>
+      <Stack mb={10} key={i}>
         {/* returns the creation date if it's the last item or if the next creation date is different */}
         {i === filteredReminders.length - 1 ||
         filteredReminders[i + 1].created_at !== item.created_at ? (
           item.created_at === state.today ? (
-            <h1>today</h1>
+            <Typography variant="h3" component="h2" mb={1}>
+              today
+            </Typography>
           ) : (
             <h1>{formatDate(item.created_at)}</h1>
           )
@@ -195,8 +203,8 @@ const App = () => {
             direction="row"
             alignItems="center"
             p={2}
-            bgcolor="#D9B382"
-            width="600px"
+            bgcolor="#946B43"
+            width="40rem"
           >
             {/* checkbox that evaluates if a task is completed or not */}
             <FormControlLabel
@@ -205,13 +213,18 @@ const App = () => {
                   checked={item.completed}
                   onChange={handleClick}
                   inputProps={{ value: 'completed', name: item.id }}
+                  sx={{
+                    '&.Mui-checked': {
+                      color: 'white',
+                    },
+                  }}
                 />
               }
             />
 
             {/* Stack that contains the title and the description */}
             <Stack>
-              <Typography variant="h4" component="h2" color="white">
+              <Typography variant="h4" component="h3" color="white">
                 {item.title}
               </Typography>
               <Typography variant="body1" component="p" color="white">
@@ -229,7 +242,7 @@ const App = () => {
                   checked={item.priority}
                   onChange={handleClick}
                   icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite sx={{ color: 'yellow' }} />}
+                  checkedIcon={<Favorite sx={{ color: 'white' }} />}
                   inputProps={{ value: 'priority', name: item.id }}
                 />
               }
@@ -237,20 +250,17 @@ const App = () => {
           </Stack>
         </Paper>
       </Stack>
-      // </li>
     ));
   };
 
   return (
     <Container>
-      <div className="page-box">
+      <Stack mt={2} alignItems="center">
         <Button variant="contained" color="error" onClick={createItem}>
           Add Task
         </Button>
 
         {renderTabList()}
-
-        {/* <ul className="list">{renderItems()}</ul> */}
 
         <Stack spacing={3} direction="column-reverse">
           {renderItems()}
@@ -263,7 +273,31 @@ const App = () => {
             onSave={handleSubmit}
           />
         ) : null}
-      </div>
+      </Stack>
+      <Stack
+        bottom="0"
+        left="0"
+        right="0"
+        position="absolute"
+        bgcolor="#825831"
+        direction="row"
+        justifyContent="center"
+      >
+        <Typography color="white">
+          {' '}
+          built by{' '}
+          <Link
+            href="https://github.com/guitrentini96"
+            underline="hover"
+            target="_blank"
+            rel="noopener"
+            sx={{ color: 'white' }}
+          >
+            Guilherme Trentini
+          </Link>{' '}
+          :)
+        </Typography>
+      </Stack>
     </Container>
   );
 };
