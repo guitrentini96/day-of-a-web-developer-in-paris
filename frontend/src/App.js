@@ -183,7 +183,7 @@ const App = () => {
       filteredReminders = filteredReminders.filter((item) => item.priority);
     }
     return filteredReminders.map((item, i) => (
-      <Stack mb={10} key={i}>
+      <Stack mb={10} key={i} maxWidth="90vw">
         {/* returns the creation date if it's the last item or if the next creation date is different */}
         {i === filteredReminders.length - 1 ||
         filteredReminders[i + 1].created_at !== item.created_at ? (
@@ -198,7 +198,7 @@ const App = () => {
           ''
         )}
 
-        <Paper elevation={5}>
+        <Paper elevation={5} maxWidth="90vw">
           <Stack
             direction="row"
             alignItems="center"
@@ -275,10 +275,10 @@ const App = () => {
         ) : null}
       </Stack>
       <Stack
-        bottom="0"
+        position="fixed"
         left="0"
-        right="0"
-        position="absolute"
+        bottom="0"
+        width="100vw"
         bgcolor="#825831"
         direction="row"
         justifyContent="center"
