@@ -198,7 +198,7 @@ const App = () => {
           ''
         )}
 
-        <Paper elevation={5} maxWidth="90vw">
+        <Paper elevation={5}>
           <Stack
             direction="row"
             alignItems="center"
