@@ -2,20 +2,34 @@ import './App.css';
 import React from 'react';
 import Modal from './components/Modal';
 import axios from 'axios';
-import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import {
+  Paper,
+  Container,
+  Button,
+  ToggleButton,
+  ToggleButtonGroup,
+  FormGroup,
+  FormControlLabel,
+  Switch,
+  Stack,
+  Checkbox,
+  Typography,
+  Link,
+} from '@mui/material';
+// import Paper from '@mui/material/Paper';
+// import Container from '@mui/material/Container';
+// import Button from '@mui/material/Button';
+// import ToggleButton from '@mui/material/ToggleButton';
+// import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+// import FormGroup from '@mui/material/FormGroup';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Switch from '@mui/material/Switch';
+// import Stack from '@mui/material/Stack';
+// import Checkbox from '@mui/material/Checkbox';
+// import Typography from '@mui/material/Typography';
+// import Link from '@mui/material/Link';
 
 const App = () => {
   const [state, setState] = React.useState({
